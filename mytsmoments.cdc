@@ -75,13 +75,44 @@ contract mytsmoments: NonFungibleToken {
     //   An array of the IDs of the new moments that were minted.
     private fun mintMoments(playID: UInt32, metadata: {String: String}, amount: UInt32): [UInt64] {
 
-        let mut newMomentIDs: [UInt64] = []
+    // Initialize the newMomentIDs array.
+    var newMomentIDs: [UInt64] = []
+
+    // Mint the specified number of moments.
+    for i in 0 .amount - 1 {
+
+        // Increment the next moment ID.
+        nextMomentID += 1; //unexpected token in expression: '='
+
+        // Create a new moment.
+        let momentID = nextMomentID
+
+        // Mint the moment.
+        mintMoment(momentID, playID, metadata)
+
+        // Add the moment ID to the array of new moment IDs.
+        newMomentIDs.append(momentID)
+    }
+
+    // Mints a new moment.
+    //
+    // Args:
+    //   playID: The ID of the Play that the user wants to create a moment for.
+    //   metadata: A map of strings to strings containing the metadata for the new moment.
+    //   amount: The number of moments to mint.
+    //
+    // Returns:
+    //   An array of the IDs of the new moments that were minted.
+   private fun mintMoments(playID: UInt32, metadata: {String: String}, amount: UInt32): [UInt64] {
+
+        // Initialize the newMomentIDs array.
+        var newMomentIDs: [UInt64] = []
 
         // Mint the specified number of moments.
-        for i in 0 .. amount {
+        for i in 0 .amount - 1 {
 
             // Increment the next moment ID.
-            nextMomentID += 1
+            nextMomentID += 1; //According with flow I can´t deploy because this error
 
             // Create a new moment.
             let momentID = nextMomentID
@@ -93,8 +124,17 @@ contract mytsmoments: NonFungibleToken {
             newMomentIDs.append(momentID)
         }
 
+        // Transfer the royalties to the creator of the moment.
+        // This is done by calling a separate function called `transferRoyalties()`. 
+        transferRoyalties(USDCAddress(), self.accountID, usdcAmount)
+
         return newMomentIDs
+
+        ini(){
+            newMomentIDs: [UInt64] = []
+        }
     }
+ 
 
     // Transfers a moment to a new owner.
     //
